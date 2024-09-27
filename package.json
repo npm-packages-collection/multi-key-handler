@@ -10,8 +10,26 @@
     "url": "git+https://github.com/32teeth/multi-key-handler.git"
   },
   "license": "CC-BY-SA-4.0",
-  "version": "0.0.2",
-  "keywords": [],
+  "version": "0.0.3",
+  "keywords": [
+    "multi-key",
+    "keyboard",
+    "key-handler",
+    "key-combination",
+    "multi-key-handler",
+    "key-events",
+    "keyboard-events",
+    "keymap",
+    "event-listener",
+    "arrow-keys",
+    "debugging",
+    "custom-key-handler",
+    "keydown",
+    "keyup",
+    "javascript",
+    "callback",
+    "npm-package"
+  ],
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
@@ -29,7 +47,9 @@
   },
   "devDependencies": {
     "chai": "^4.3.4",
-    "mocha": "^9.1.3"
+    "mocha": "^9.1.3",
+    "jsdom": "^25.0.1",
+    "sinon": "^19.0.2"
   },
   "bugs": {
     "url": "https://github.com/32teeth/multi-key-handler/issues"
@@ -37,9 +57,5 @@
   "homepage": "https://github.com/32teeth/multi-key-handler#readme",
   "directories": {
     "test": "test"
-  },
-  "dependencies": {
-    "jsdom": "^25.0.1",
-    "sinon": "^19.0.2"
   }
 }
