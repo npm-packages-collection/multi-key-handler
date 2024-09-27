@@ -71,7 +71,8 @@ export class MultiKeyHandler {
    */
   #handler(e) {
     const char = String.fromCharCode(e.keyCode).toLowerCase();
-    if (!this.#keymap.size || this.#keymap.has(char)) {
+
+    if (this.#keymap.has(char)) {
       if (char === "&") {
         this.#states["up"] = e.type === "keydown";
       } else if (char === "'") {
@@ -83,16 +84,18 @@ export class MultiKeyHandler {
       } else {
         this.#states[char] = e.type === "keydown";
       }
-    }
-    if (typeof this.#cb === 'function') {
-      this.#cb(this.#states);
-    }
-    if (this.#debug) {
-      const currentState = JSON.stringify(this.#states);
-      if (currentState !== this.#previousState) {
-        console.clear();
-        console.table(this.#states);
-        this.#previousState = currentState;
+
+      if (typeof this.#cb === 'function') {
+        this.#cb(this.#states);
+      }
+
+      if (this.#debug) {
+        const currentState = JSON.stringify(this.#states);
+        if (currentState !== this.#previousState) {
+          console.clear();
+          console.table(this.#states);
+          this.#previousState = currentState;
+        }
       }
     }
   }

@@ -37,5 +37,9 @@
   "homepage": "https://github.com/32teeth/multi-key-handler#readme",
   "directories": {
     "test": "test"
+  },
+  "dependencies": {
+    "jsdom": "^25.0.1",
+    "sinon": "^19.0.2"
   }
 }
