@@ -1,5 +1,5 @@
 {
-  "name": "@32teeth/multi-key-handler",
+  "name": "@npm-packages-collection/multi-key-handler",
   "description": "A utility class for handling multiple key events and executing a callback function based on the key states.",
   "author": "Eugene Yevhen Andruszczenko <eugene.andruszczenko@gmail.com>",
   "contributors": [
@@ -7,10 +7,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/32teeth/multi-key-handler.git"
+    "url": "git+https://github.com/npm-packages-collection/multi-key-handler.git"
   },
   "license": "CC-BY-SA-4.0",
-  "version": "0.0.3",
+  "version": "0.0.2",
   "keywords": [
     "multi-key",
     "keyboard",
@@ -52,9 +52,9 @@
     "sinon": "^19.0.2"
   },
   "bugs": {
-    "url": "https://github.com/32teeth/multi-key-handler/issues"
+    "url": "https://github.com/npm-packages-collection/multi-key-handler/issues"
   },
-  "homepage": "https://github.com/32teeth/multi-key-handler#readme",
+  "homepage": "https://github.com/npm-packages-collection/multi-key-handler#readme",
   "directories": {
     "test": "test"
   }
