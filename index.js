@@ -25,12 +25,16 @@ export class MultiKeyHandler {
     this.#previousState = null;
 
     if (arrows) {
-      "&%'(".split("").forEach(char => {
+      const arrowMapping = {
+        '&': 'up',
+        "'": 'right',
+        '%': 'left',
+        '(': 'down'
+      };
+
+      Object.entries(arrowMapping).forEach(([char, direction]) => {
         this.#keymap.add(char);
-        if (char === "&") this.#keymap.add("up");
-        if (char === "'") this.#keymap.add("right");
-        if (char === "%") this.#keymap.add("left");
-        if (char === "(") this.#keymap.add("down");
+        this.#keymap.add(direction);
       });
     }
 
@@ -39,64 +43,82 @@ export class MultiKeyHandler {
 
   // Getter for #keymap
   get keymap() {
-    return Array.from(this.#keymap).join(""); // Returns keymap as a string
+    return Array.from(this.#keymap).join("");
   }
 
   // Setter for #keymap
   set keymap(keys) {
-    if (typeof keys === 'string') {
-      this.#keymap = new Set(keys.split(""));
-    } else {
+    if (typeof keys !== 'string') {
       throw new TypeError('Keymap must be a string.');
     }
+    this.#keymap = new Set(keys.split(""));
   }
 
   /**
    * Toggles event listeners for keydown and keyup events.
-   *
    * @param {boolean} shouldBind - Indicates whether to bind or unbind the event listeners.
+   * @private
    */
   #toggleEventListeners(shouldBind = true) {
     const method = shouldBind ? 'addEventListener' : 'removeEventListener';
+    const boundHandler = this.#handler.bind(this);
     ["keydown", "keyup"].forEach(event => {
-      window[method](event, this.#handler.bind(this), false);
+      window[method](event, boundHandler, false);
     });
   }
 
   /**
+   * Updates the debug display if debug mode is enabled.
+   * @private
+   */
+  #updateDebugDisplay() {
+    if (!this.#debug) return;
+
+    const currentState = JSON.stringify(this.#states);
+    if (currentState !== this.#previousState) {
+      console.clear();
+      console.table(this.#states);
+      this.#previousState = currentState;
+    }
+  }
+
+  /**
    * Handles keyboard events and updates the states accordingly.
-   *
-   * @param {Event} e - The keyboard event.
-   * @returns {void}
+   * @param {KeyboardEvent} e - The keyboard event.
+   * @private
    */
   #handler(e) {
     const char = String.fromCharCode(e.keyCode).toLowerCase();
+    const isKeyDown = e.type === "keydown";
 
-    if (this.#keymap.has(char)) {
-      if (char === "&") {
-        this.#states["up"] = e.type === "keydown";
-      } else if (char === "'") {
-        this.#states["right"] = e.type === "keydown";
-      } else if (char === "%") {
-        this.#states["left"] = e.type === "keydown";
-      } else if (char === "(") {
-        this.#states["down"] = e.type === "keydown";
-      } else {
-        this.#states[char] = e.type === "keydown";
-      }
+    // Check if the key is in our keymap
+    if (!this.#keymap.has(char)) return;
 
-      if (typeof this.#cb === 'function') {
-        this.#cb(this.#states);
-      }
+    // Update states based on arrow keys
+    const arrowMapping = {
+      '&': 'up',
+      "'": 'right',
+      '%': 'left',
+      '(': 'down'
+    };
 
-      if (this.#debug) {
-        const currentState = JSON.stringify(this.#states);
-        if (currentState !== this.#previousState) {
-          console.clear();
-          console.table(this.#states);
-          this.#previousState = currentState;
-        }
-      }
+    const key = arrowMapping[char] || char;
+    this.#states[key] = isKeyDown;
+
+    // Call the callback if it exists
+    if (typeof this.#cb === 'function') {
+      this.#cb(this.#states);
     }
+
+    this.#updateDebugDisplay();
+  }
+
+  /**
+   * Cleans up event listeners when the handler is no longer needed.
+   */
+  destroy() {
+    this.#toggleEventListeners(false);
+    this.#states = {};
+    this.#previousState = null;
   }
 }
