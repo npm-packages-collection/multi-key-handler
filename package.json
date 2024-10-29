@@ -10,7 +10,7 @@
     "url": "git+https://github.com/npm-packages-collection/multi-key-handler.git"
   },
   "license": "CC-BY-SA-4.0",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "keywords": [
     "multi-key",
     "keyboard",
